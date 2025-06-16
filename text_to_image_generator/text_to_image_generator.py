@@ -39,25 +39,29 @@ def generate_clipdrop(prompt):
     # io.BytesIO creates an in-memory binary stream from the response content.
     return Image.open(io.BytesIO(resp.content))
 
-# Create a text input field in the Streamlit application for the user to enter their prompt.
-prompt = st.text_input("Prompt:")
+def run():
+    # Create a text input field in the Streamlit application for the user to enter their prompt.
+    prompt = st.text_input("Prompt:")
 
-# Create a button in the Streamlit application.
-# The code inside the 'if' block will execute only when this button is clicked.
-if st.button("Generate"):
-    # Display a spinner with a message while the image is being generated.
-    # This provides visual feedback to the user during the potentially long API call.
-    with st.spinner("Generating... (uses 1 free credit)"):
-        try:
-            # Call the function to generate the image using the user's prompt.
-            img = generate_clipdrop(prompt)
-            # Display the generated image in the Streamlit application.
-            # 'caption' adds text below the image, and 'use_container_width=True' makes the image responsive.
-            st.image(img, caption=prompt, use_container_width=True)
-        except requests.exceptions.HTTPError as e:
-            # Catch specific HTTP errors from the API and display a user-friendly error message
-            # including the status code and response text from the API.
-            st.error(f"API Error {e.response.status_code}: {e.response.text}")
-        except Exception as e:
-            # Catch any other general exceptions that might occur and display a generic error message.
-            st.error(f"Error: {e}")
+    # Create a button in the Streamlit application.
+    # The code inside the 'if' block will execute only when this button is clicked.
+    if st.button("Generate"):
+        # Display a spinner with a message while the image is being generated.
+        # This provides visual feedback to the user during the potentially long API call.
+        with st.spinner("Generating... (uses 1 free credit)"):
+            try:
+                # Call the function to generate the image using the user's prompt.
+                img = generate_clipdrop(prompt)
+                # Display the generated image in the Streamlit application.
+                # 'caption' adds text below the image, and 'use_container_width=True' makes the image responsive.
+                st.image(img, caption=prompt, use_container_width=True)
+            except requests.exceptions.HTTPError as e:
+                # Catch specific HTTP errors from the API and display a user-friendly error message
+                # including the status code and response text from the API.
+                st.error(f"API Error {e.response.status_code}: {e.response.text}")
+            except Exception as e:
+                # Catch any other general exceptions that might occur and display a generic error message.
+                st.error(f"Error: {e}")
+
+if __name__=="__main__":
+    run()
