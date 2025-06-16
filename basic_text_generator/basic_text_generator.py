@@ -47,30 +47,34 @@ def generate_response(chain, topic):
     output = chain.invoke({"topic": topic})
     return output.content # Return only the text content of the LLM's output.
 
-# Initialize the LLM chain globally when the script runs.
-# This uses the cached function, so it's efficient.
-chain = intialize_llm_chain()
+def run():
+    # Initialize the LLM chain globally when the script runs.
+    # This uses the cached function, so it's efficient.
+    chain = intialize_llm_chain()
 
-# Set the title of the Streamlit application.
-st.title("Jokes Generator")
+    # Set the title of the Streamlit application.
+    st.title("Jokes Generator")
 
-# Create a Streamlit form for user input.
-# Using a form helps in grouping input widgets and processing them on submission.
-with st.form("topic_form"): # Assign a unique key to the form.
-    # Text input field for the user to enter a topic.
-    topic = st.text_input("Enter a topic: ", key="topic_input") # Assign a unique key to the text input.
+    # Create a Streamlit form for user input.
+    # Using a form helps in grouping input widgets and processing them on submission.
+    with st.form("topic_form"): # Assign a unique key to the form.
+        # Text input field for the user to enter a topic.
+        topic = st.text_input("Enter a topic: ", key="topic_input") # Assign a unique key to the text input.
 
-    # Submit button for the form.
-    submit_btn = st.form_submit_button("Generate")
+        # Submit button for the form.
+        submit_btn = st.form_submit_button("Generate")
 
-    # Check if the submit button was clicked.
-    if submit_btn:
-        # Use a try-except block for error handling, especially for API calls.
-        try:
-            # Generate the joke using the chain and the user-provided topic.
-            joke = generate_response(chain, topic)
-            # Display the generated joke in the Streamlit app.
-            st.write(joke)
-        except Exception as e:
-            # If an error occurs during joke generation (e.g., API issues), display an error message.
-            st.error(f"Error: {e}")
+        # Check if the submit button was clicked.
+        if submit_btn:
+            # Use a try-except block for error handling, especially for API calls.
+            try:
+                # Generate the joke using the chain and the user-provided topic.
+                joke = generate_response(chain, topic)
+                # Display the generated joke in the Streamlit app.
+                st.write(joke)
+            except Exception as e:
+                # If an error occurs during joke generation (e.g., API issues), display an error message.
+                st.error(f"Error: {e}")
+
+if __name__ == "__main__":
+    run()
