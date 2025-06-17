@@ -2,15 +2,14 @@ import os
 from typing_extensions import TypedDict
 
 class SaveFileState(TypedDict):
-    code_with_comment: list
+    readme_file: list
     folder_path: str  # Required for saving into the correct folder
 
-def save_py_agent(state: SaveFileState):
-    code = state["code_with_comment"][-1]["content"]
+def save_readme_agent(state: SaveFileState):
+    code = state["readme_file"][-1]["content"]
 
     folder_path = state["folder_path"]
-    folder_name = os.path.basename(folder_path)
-    file_path = os.path.join(folder_path, f"{folder_name}.py")
+    file_path = os.path.join(folder_path, "README.md")
 
     os.makedirs(folder_path, exist_ok=True)  # Ensure the folder exists
 
